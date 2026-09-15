@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tres Puntos C.A. — Energía · Industria · Infraestructura</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --olive:#454B2E;
+    --olive-dark:#2C3019;
+    --olive-darker:#1E2112;
+    --gold:#E0A21B;
+    --gold-dark:#B9840F;
+    --offwhite:#F6F4F1;
+    --paper:#FBFAF8;
+    --gray:#B5B6BB;
+    --ink:#20220F;
+    --ink-soft:#4A4D3F;
+    --max:1240px;
+    --edge:clamp(20px,5vw,64px);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+
+  body{
+    font-family:'IBM Plex Sans', sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  img{display:block;max-width:100%;}
+
+  h1,h2,h3{
+    font-family:'Space Grotesk', sans-serif;
+    color:var(--ink);
+    line-height:1.12;
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+
+  a{color:inherit;text-decoration:none;}
+
+  .kicker{
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:0.78rem;
+    font-weight:600;
+    letter-spacing:0.14em;
+    color:var(--gold-dark);
+  }
+  .kicker.on-dark{color:var(--gold);}
+
+  .container{
+    max-width:var(--max);
+    margin:0 auto;
+    padding-left:var(--edge);
+    padding-right:var(--edge);
+  }
+
+  button{font-family:inherit;cursor:pointer;border:none;background:none;}
+
+  header{
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:100;
+    padding:20px var(--edge);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    transition:background-color .35s ease, box-shadow .35s ease, padding .35s ease;
+  }
+  header.scrolled{
+    background:rgba(246,244,241,0.94);
+    backdrop-filter:blur(8px);
+    box-shadow:0 1px 0 rgba(30,33,18,0.08);
+    padding-top:14px;padding-bottom:14px;
+  }
+  .brand{display:flex;align-items:center;gap:12px;}
+  .brand img{height:34px;width:auto;transition:filter .35s ease;}
+  .logo-dark{display:block;}
+  .logo-light{display:none;}
+  header.scrolled .logo-dark{display:block;}
+  header.scrolled .logo-light{display:none;}
+  header:not(.scrolled) .logo-dark{display:none;}
+  header:not(.scrolled) .logo-light{display:block;}
+
+  nav.primary-nav{display:flex;align-items:center;gap:40px;}
+  nav.primary-nav a{
+    font-size:0.95rem;
+    font-weight:500;
+    color:var(--offwhite);
+    position:relative;
+    padding-bottom:4px;
+  }
+  header.scrolled nav.primary-nav a{color:var(--ink);}
+  nav.primary-nav a::after{
+    content:"";
+    position:absolute;left:0;bottom:0;
+    width:0;height:2px;background:var(--gold);
+    transition:width .25s ease;
+  }
+  nav.primary-nav a:hover::after{width:100%;}
+  nav.primary-nav a:focus-visible{outline:2px solid var(--gold);outline-offset:4px;}
+
+  .nav-cta{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--gold);
+    color:var(--ink);
+    font-weight:600;
+    font-size:0.9rem;
+    padding:11px 20px;
+    border-radius:2px;
+    white-space:nowrap;
+  }
+  .nav-cta:hover{background:var(--gold-dark);}
+  .nav-cta:focus-visible{outline:2px solid var(--olive);outline-offset:3px;}
+
+  .nav-links-wrap{display:flex;align-items:center;gap:40px;}
+
+  .menu-toggle{
+    display:none;
+    width:26px;height:20px;
+    position:relative;
+    z-index:101;
+    flex-direction:column;
+    justify-content:space-between;
+  }
+  .menu-toggle span{
+    display:block;height:2px;width:100%;
+    background:var(--offwhite);
+    transition:background-color .3s ease, transform .3s ease, opacity .3s ease;
+  }
+  header.scrolled .menu-toggle span{background:var(--ink);}
+  .nav-links-wrap.open ~ .menu-toggle span{background:var(--offwhite) !important;}
+  .menu-toggle:focus-visible{outline:2px solid var(--gold);outline-offset:4px;}
+
+  .hero{
+    position:relative;
+    min-height:100svh;
+    display:flex;
+    align-items:flex-end;
+    background:#12140b;
+  }
+  .hero-media{position:absolute;inset:0;overflow:hidden;}
+  .hero-media img{width:100%;height:100%;object-fit:cover;object-position:center 42%;transform:scale(1.03);}
+  .hero-media::after{
+    content:"";
+    position:absolute;inset:0;
+    background:
+      linear-gradient(180deg, rgba(20,22,12,0.55) 0%, rgba(20,22,12,0.25) 30%, rgba(20,22,12,0.55) 68%, rgba(15,16,9,0.92) 100%),
+      linear-gradient(100deg, rgba(20,22,12,0.55) 0%, rgba(20,22,12,0.08) 45%, rgba(20,22,12,0.05) 100%);
+  }
+  .hero-content{
+    position:relative;
+    z-index:2;
+    width:100%;
+    padding:180px var(--edge) 120px;
+    max-width:var(--max);
+    margin:0 auto;
+  }
+  .hero-content .kicker{display:block;margin-bottom:22px;color:var(--gold);font-size:0.82rem;}
+  .hero-content h1{color:var(--offwhite);font-size:clamp(2.4rem, 5.2vw, 4.35rem);max-width:15ch;margin-bottom:26px;}
+  .hero-content p{color:#E4E2D8;font-size:1.08rem;max-width:56ch;margin-bottom:40px;}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:16px;}
+  .btn{display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:0.96rem;padding:15px 26px;border-radius:2px;transition:background-color .25s ease, color .25s ease, border-color .25s ease, transform .15s ease;}
+  .btn:focus-visible{outline:2px solid var(--gold);outline-offset:3px;}
+  .btn-primary{background:var(--gold);color:var(--ink);}
+  .btn-primary:hover{background:var(--gold-dark);}
+  .btn-outline{background:transparent;color:var(--offwhite);border:1.5px solid rgba(246,244,241,0.55);}
+  .btn-outline:hover{border-color:var(--offwhite);background:rgba(246,244,241,0.08);}
+  .hero-caption{position:absolute;z-index:2;right:var(--edge);bottom:44px;max-width:300px;text-align:left;padding:20px 22px;background:rgba(20,22,12,0.55);border-left:2px solid var(--gold);backdrop-filter:blur(3px);}
+  .hero-caption .kicker{font-size:0.7rem;margin-bottom:8px;color:var(--gold);}
+  .hero-caption p{color:#EDEBE1;font-size:0.92rem;font-weight:500;line-height:1.45;}
+
+  section{position:relative;}
+  .section-pad{padding:120px 0;}
+  .section-head{max-width:640px;margin-bottom:64px;}
+  .section-head .kicker{display:block;margin-bottom:16px;}
+  .section-head h2{font-size:clamp(1.7rem,3.2vw,2.5rem);}
+  .section-head h2 + p{margin-top:20px;color:var(--ink-soft);font-size:1.05rem;max-width:52ch;}
+
+  .servicios{background:var(--offwhite);}
+  .service-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(30,33,18,0.12);border-top:1px solid rgba(30,33,18,0.12);border-bottom:1px solid rgba(30,33,18,0.12);}
+  .service-card{background:var(--offwhite);display:flex;flex-direction:column;}
+  .service-card figure{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--olive-darker);}
+  .service-card img{width:100%;height:100%;object-fit:cover;filter:grayscale(0.12) contrast(1.05);transition:transform .5s ease;}
+  .service-card:hover img{transform:scale(1.045);}
+  .service-card figure::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(30,33,18,0) 55%, rgba(20,22,12,0.55) 100%);}
+  .service-num{position:absolute;left:20px;bottom:16px;z-index:2;color:var(--offwhite);font-family:'Space Grotesk',sans-serif;font-size:0.85rem;letter-spacing:0.06em;}
+  .service-body{padding:32px 30px 40px;flex:1;display:flex;flex-direction:column;}
+  .service-body h3{font-size:1.22rem;margin-bottom:14px;}
+  .service-body p{color:var(--ink-soft);font-size:0.98rem;}
+
+  .enfoque{background:var(--olive-darker);position:relative;overflow:hidden;}
+  .enfoque .bg-img{position:absolute;inset:0;opacity:0.34;}
+  .enfoque .bg-img img{width:100%;height:100%;object-fit:cover;filter:grayscale(0.25);}
+  .enfoque::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg, rgba(30,33,18,0.96) 0%, rgba(30,33,18,0.86) 42%, rgba(30,33,18,0.55) 100%);}
+  .enfoque .container{position:relative;z-index:2;}
+  .enfoque .section-head h2{color:var(--offwhite);max-width:16ch;}
+  .enfoque .section-head p{color:#D8D6C8;}
+
+  .diferenciadores{background:var(--paper);}
+  .diff-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid rgba(30,33,18,0.15);}
+  .diff-item{padding:36px 28px 40px 0;border-right:1px solid rgba(30,33,18,0.15);}
+  .diff-item:last-child{border-right:none;padding-right:0;}
+  .diff-item .icon-wrap{margin-bottom:26px;}
+  .diff-item h3{font-size:1.08rem;margin-bottom:12px;}
+  .diff-item p{color:var(--ink-soft);font-size:0.95rem;}
+  .diff-item svg{width:34px;height:34px;stroke:var(--gold-dark);}
+
+  .cierre{position:relative;min-height:640px;display:flex;align-items:center;background:#0f110a;}
+  .cierre-media{position:absolute;inset:0;}
+  .cierre-media img{width:100%;height:100%;object-fit:cover;object-position:center 60%;}
+  .cierre-media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(15,17,10,0.78) 0%, rgba(15,17,10,0.65) 50%, rgba(15,17,10,0.9) 100%);}
+  .cierre .container{position:relative;z-index:2;padding-top:110px;padding-bottom:110px;display:flex;flex-wrap:wrap;gap:60px;justify-content:space-between;align-items:flex-end;}
+  .cierre-main{max-width:600px;}
+  .cierre-main .kicker{display:block;margin-bottom:18px;}
+  .cierre-main h2{color:var(--offwhite);font-size:clamp(1.9rem,3.8vw,3rem);margin-bottom:22px;max-width:14ch;}
+  .cierre-main p{color:#E4E2D8;font-size:1.05rem;max-width:48ch;margin-bottom:36px;}
+  .cierre-info{border-left:2px solid var(--gold);padding-left:24px;color:#D8D6C8;font-size:0.95rem;line-height:1.7;min-width:220px;}
+  .cierre-info strong{display:block;color:var(--offwhite);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:1rem;margin-bottom:6px;}
+
+  footer{background:var(--olive);padding:44px var(--edge);}
+  .footer-inner{max-width:var(--max);margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;}
+  .footer-inner img{height:30px;width:auto;}
+  .footer-tagline{color:#E7E5D8;font-size:0.92rem;font-weight:500;letter-spacing:0.02em;}
+  .footer-copy{color:rgba(231,229,216,0.7);font-size:0.85rem;}
+
+  @media (max-width: 980px){
+    .service-grid{grid-template-columns:1fr;}
+    .diff-grid{grid-template-columns:repeat(2,1fr);}
+    .diff-item{border-bottom:1px solid rgba(30,33,18,0.15);padding-bottom:32px;}
+    .diff-item:nth-child(2n){border-right:none;}
+    .diff-item:nth-child(1),.diff-item:nth-child(2){padding-top:32px;}
+  }
+  @media (max-width: 760px){
+    .nav-links-wrap{position:fixed;top:0;right:0;height:100svh;width:min(78vw,340px);background:var(--olive-darker);flex-direction:column;align-items:flex-start;justify-content:center;gap:32px;padding:40px var(--edge);transform:translateX(100%);transition:transform .4s ease;z-index:99;}
+    .nav-links-wrap.open{transform:translateX(0);}
+    nav.primary-nav{flex-direction:column;align-items:flex-start;gap:28px;}
+    nav.primary-nav a{color:var(--offwhite);font-size:1.15rem;}
+    .menu-toggle{display:flex;}
+    .nav-cta{padding:13px 22px;}
+    .hero-content{padding-top:140px;padding-bottom:200px;}
+    .hero-caption{left:var(--edge);right:var(--edge);max-width:none;bottom:28px;}
+    .section-pad{padding:80px 0;}
+    .section-head{margin-bottom:44px;}
+    .diff-grid{grid-template-columns:1fr;}
+    .diff-item{border-right:none !important;border-bottom:1px solid rgba(30,33,18,0.15);padding:28px 0 !important;}
+    .diff-item:last-child{border-bottom:none;}
+    .cierre .container{padding-top:80px;padding-bottom:80px;align-items:flex-start;}
+    .footer-inner{flex-direction:column;align-items:flex-start;}
+  }
+  @media (max-width: 420px){.hero-content h1{max-width:none;}}
+</style>
+</head>
+<body>
+<header id="siteHeader">
+  <a href="#" class="brand" aria-label="Tres Puntos, inicio">
+    <img src="images/logo-black.png" alt="Tres Puntos" class="logo-dark">
+    <img src="images/logo-white.png" alt="Tres Puntos" class="logo-light">
+  </a>
+  <div class="nav-links-wrap" id="navLinks">
+    <nav class="primary-nav" aria-label="Navegación principal">
+      <a href="#servicios">Servicios</a>
+      <a href="#enfoque">Nuestro enfoque</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <a href="#contacto" class="nav-cta" style="margin-top:8px;">Conversar sobre un proyecto</a>
+  </div>
+  <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
+</header>
+<main>
+  <section class="hero">
+    <div class="hero-media"><img src="images/hero-pipeline.jpg" alt="Instalación de tubería industrial en campo, con grúa, maquinaria pesada y personal técnico durante una obra de energía."></div>
+    <div class="hero-content">
+      <span class="kicker">ENERGÍA · INDUSTRIA · INFRAESTRUCTURA</span>
+      <h1>Capacidad técnica para ejecutar.</h1>
+      <p>Tres Puntos desarrolla y ejecuta soluciones para operaciones y proyectos de energía, industria e infraestructura en Venezuela, combinando experiencia de campo, capacidad de respuesta y control apoyado en tecnología.</p>
+      <div class="hero-actions"><a href="#servicios" class="btn btn-primary">Conocer servicios →</a><a href="#contacto" class="btn btn-outline">Conversar sobre un proyecto</a></div>
+    </div>
+    <div class="hero-caption"><span class="kicker">ENERGÍA · VENEZUELA</span><p>Experiencia local. Ejecución con criterio.</p></div>
+  </section>
+  <section class="servicios section-pad" id="servicios">
+    <div class="container"><div class="section-head"><span class="kicker">NUESTRAS CAPACIDADES</span><h2>Soluciones para energía, industria e infraestructura.</h2></div></div>
+    <div class="service-grid">
+      <article class="service-card"><figure><img src="images/pumpjacks-sunset.jpg" alt="Bombas de extracción petrolera (pumpjacks) en el campo al atardecer."><span class="service-num">01</span></figure><div class="service-body"><h3>Servicios especializados para la industria petrolera</h3><p>Well testing, bombeo, mantenimiento y servicios de apoyo para operaciones de producción e intervención.</p></div></article>
+      <article class="service-card"><figure><img src="images/construction-formwork.jpg" alt="Obra de construcción de infraestructura industrial con encofrados, estructura de concreto y grúa torre."><span class="service-num">02</span></figure><div class="service-body"><h3>Infraestructura y obras</h3><p>Construcción, rehabilitación, adecuación y montaje de infraestructura e instalaciones industriales.</p></div></article>
+      <article class="service-card"><figure><img src="images/workers-port.jpg" alt="Equipo técnico con casco supervisando la movilización de equipos pesados en un puerto industrial."><span class="service-num">03</span></figure><div class="service-body"><h3>Soporte a la operación</h3><p>Procura, transporte, movilización y suministro de equipos y materiales para responder a las necesidades de cada proyecto.</p></div></article>
+    </div>
+  </section>
+  <section class="enfoque section-pad" id="enfoque">
+    <div class="bg-img"><img src="images/refinery-night.jpg" alt="Planta industrial iluminada durante la noche."></div>
+    <div class="container"><div class="section-head"><span class="kicker on-dark">NUESTRO ENFOQUE</span><h2>Ejecutar bien también es tener visibilidad.</h2><p>En Tres Puntos combinamos experiencia de campo con herramientas de seguimiento que permiten mantener información actualizada sobre avance, recursos, hitos y decisiones críticas. Esto nos permite anticipar desviaciones, responder más rápido y mantener cada proyecto bajo control.</p></div></div>
+  </section>
+  <section class="diferenciadores section-pad">
+    <div class="container">
+      <div class="section-head"><span class="kicker">CÓMO APORTAMOS VALOR</span><h2>Presencia en campo. Información para decidir. Capacidad para responder.</h2></div>
+      <div class="diff-grid">
+        <div class="diff-item"><div class="icon-wrap"><svg viewBox="0 0 34 34" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="17" cy="17" r="12.5"></circle><circle cx="17" cy="17" r="6"></circle><circle cx="17" cy="17" r="1.4" fill="currentColor" stroke="none"></circle><path d="M17 2.5v4M17 27.5v4M2.5 17h4M27.5 17h4"></path></svg></div><h3>Criterio técnico</h3><p>Entendemos el contexto operativo y convertimos cada necesidad en una solución ejecutable.</p></div>
+        <div class="diff-item"><div class="icon-wrap"><svg viewBox="0 0 34 34" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18.5 2.5 6 19h9l-1.5 12.5L28 15h-9l-0.5-12.5Z"></path></svg></div><h3>Respuesta ágil</h3><p>Tomamos decisiones cerca de la operación y actuamos con rapidez cuando las condiciones cambian.</p></div>
+        <div class="diff-item"><div class="icon-wrap"><svg viewBox="0 0 34 34" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 29V6M4 29h26"></path><path d="M9 24v-8M15.5 24V11M22 24v-13M28.5 24V16"></path></svg></div><h3>Tecnología y data</h3><p>Usamos herramientas digitales para dar seguimiento al avance, concentrar información y mejorar la visibilidad del proyecto.</p></div>
+        <div class="diff-item"><div class="icon-wrap"><svg viewBox="0 0 34 34" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="24" height="26" rx="1"></rect><path d="M11 14.5l3 3 6-7M11 24h9"></path></svg></div><h3>Control de ejecución</h3><p>Seguimos hitos, recursos, costos y variables críticas para mantener el proyecto alineado con sus objetivos.</p></div>
+      </div>
+    </div>
+  </section>
+  <section class="cierre" id="contacto">
+    <div class="cierre-media"><img src="images/refinery-coast.jpg" alt="Complejo de refinería industrial junto al mar, rodeado de vegetación."></div>
+    <div class="container"><div class="cierre-main"><span class="kicker on-dark">DESARROLLO DE NEGOCIOS</span><h2>Hablemos del próximo proyecto.</h2><p>Cuéntanos qué necesitas resolver. Podemos estructurar una solución técnica y operativa para llevarla a ejecución.</p><a href="mailto:info@trespuntos.com" class="btn btn-primary">Conversar con Tres Puntos →</a></div><div class="cierre-info"><strong>Tres Puntos C.A.</strong>Caracas, Venezuela<br>Capacidad de despliegue nacional</div></div>
+  </section>
+</main>
+<footer><div class="footer-inner"><img src="images/logo-white.png" alt="Tres Puntos C.A."><span class="footer-tagline">Energía · Industria · Infraestructura</span><span class="footer-copy">© 2026 Tres Puntos C.A.</span></div></footer>
+<script>
+  const header = document.getElementById('siteHeader');
+  const toggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('navLinks');
+  function onScroll(){ if(window.scrollY > 40){header.classList.add('scrolled');} else {header.classList.remove('scrolled');} }
+  onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
+  toggle.addEventListener('click', () => { const isOpen = navLinks.classList.toggle('open'); toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false'); });
+  navLinks.querySelectorAll('a').forEach(a => { a.addEventListener('click', () => { navLinks.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false'); }); });
+</script>
+</body>
+</html>
