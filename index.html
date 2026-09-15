@@ -102,8 +102,10 @@
     box-shadow:0 1px 0 rgba(30,33,18,0.08);
     padding-top:14px;padding-bottom:14px;
   }
-  .brand{display:flex;align-items:center;gap:12px;}
+  .brand{display:flex;align-items:center;}
   .brand img{height:34px;width:auto;transition:filter .35s ease;}
+  .brand-name{font-family:'IBM Plex Sans',sans-serif;font-size:0.88rem;font-weight:400;letter-spacing:0.22em;white-space:nowrap;margin-left:32px;color:var(--offwhite);opacity:.96;transition:color .35s ease;}
+  header.scrolled .brand-name{color:var(--ink);}
   .logo-dark{display:block;}
   .logo-light{display:none;}
   header.scrolled .logo-dark{display:block;}
@@ -408,7 +410,9 @@
     justify-content:space-between;
     gap:20px;
   }
-  .footer-inner img{height:30px;width:auto;}
+  .footer-brand{display:flex;align-items:center;}
+  .footer-brand img{height:30px;width:auto;}
+  .footer-brand-name{font-family:'IBM Plex Sans',sans-serif;font-size:0.86rem;font-weight:400;letter-spacing:0.22em;margin-left:32px;color:var(--offwhite);opacity:.94;white-space:nowrap;}
   .footer-tagline{
     color:#E7E5D8;
     font-size:0.92rem;
@@ -492,6 +496,11 @@
     .footer-inner{flex-direction:column;align-items:flex-start;}
   }
 
+  @media (max-width: 560px){
+    .brand-name{font-size:.74rem;letter-spacing:.16em;margin-left:18px;}
+    .footer-brand-name{font-size:.74rem;letter-spacing:.16em;margin-left:18px;}
+  }
+
   @media (max-width: 420px){
     .hero-content h1{max-width:none;}
   }
@@ -527,6 +536,7 @@
   <a href="#" class="brand" aria-label="Tres Puntos, inicio">
     <img src="images/logo-black.png" alt="Tres Puntos" class="logo-dark">
     <img src="images/logo-white.png" alt="Tres Puntos" class="logo-light">
+    <span class="brand-name">Tres Puntos</span>
   </a>
 
   <div class="nav-links-wrap" id="navLinks">
@@ -705,7 +715,10 @@
 
 <footer>
   <div class="footer-inner">
-    <img src="images/logo-white.png" alt="Tres Puntos C.A.">
+    <div class="footer-brand">
+      <img src="images/logo-white.png" alt="Tres Puntos C.A.">
+      <span class="footer-brand-name">Tres Puntos</span>
+    </div>
     <span class="footer-tagline">Energía · Industria · Infraestructura</span>
     <span class="footer-copy">© 2026 Tres Puntos C.A.</span>
   </div>
